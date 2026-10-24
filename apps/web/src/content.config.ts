@@ -1,4 +1,4 @@
-// One JSON file in src/content/profiles = one page; the file name is the address (/epsilon-taxi).
+// One JSON file in src/content/profiles = one page; the file name is the address (/ilgor-taxi).
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
@@ -27,7 +27,7 @@ const profiles = defineCollection({
     // A square image under public/, at least 256 × 256; without it the initials are shown.
     avatar: z
       .string()
-      .regex(/^\/[\w./-]+\.(png|jpe?g|webp|svg)$/, 'avatar: a path under public/, e.g. /avatars/epsilon-taxi.png')
+      .regex(/^\/[\w./-]+\.(png|jpe?g|webp|svg)$/, 'avatar: a path under public/, e.g. /avatars/ilgor-taxi.png')
       .optional(),
     links: z.array(link).min(1).max(20),
     // Small round icons under the buttons.

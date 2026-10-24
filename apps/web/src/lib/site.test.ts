@@ -1,16 +1,11 @@
 import { expect, it } from 'vitest'
 
-import { profileUrl, siteUrl } from './site'
+import { PRODUCTION_SITE, profileUrl, siteUrl } from './site'
 
-it('prefers PUBLIC_SITE_URL, then the Vercel production domain', () => {
-  expect(siteUrl({ PUBLIC_SITE_URL: 'https://links.epsilon.uz/', VERCEL_PROJECT_PRODUCTION_URL: 'x.vercel.app' })).toBe(
-    'https://links.epsilon.uz',
-  )
-  expect(siteUrl({ VERCEL_PROJECT_PRODUCTION_URL: 'epsilon-links.vercel.app', VERCEL_URL: 'preview-1.vercel.app' })).toBe(
-    'https://epsilon-links.vercel.app',
-  )
-  expect(siteUrl({})).toBe('http://localhost:4321')
-  expect(profileUrl(new URL('https://epsilon-links.vercel.app'), 'epsilon-taxi')).toBe(
-    'https://epsilon-links.vercel.app/epsilon-taxi',
-  )
+it('uses the fixed production address unless PUBLIC_SITE_URL is set', () => {
+  expect(siteUrl({})).toBe('https://epsilon-links.vercel.app')
+  expect(siteUrl({ VERCEL_PROJECT_PRODUCTION_URL: 'web-eight-liard-78.vercel.app' })).toBe(PRODUCTION_SITE)
+  expect(siteUrl({ PUBLIC_SITE_URL: ' https://links.epsilon.uz/ ' })).toBe('https://links.epsilon.uz')
+  expect(siteUrl({ PUBLIC_SITE_URL: '' })).toBe(PRODUCTION_SITE)
+  expect(profileUrl(new URL(PRODUCTION_SITE), 'ilgor-taxi')).toBe('https://epsilon-links.vercel.app/ilgor-taxi')
 })

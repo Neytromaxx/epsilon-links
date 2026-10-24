@@ -1,0 +1,20 @@
+{
+  "name": "Ilgʻor Taxi",
+  "bio": "Oltiariq va Toshkent boʻylab taksi. Qoʻngʻiroq qiling yoki yozing — mashina tez yetib keladi.",
+  "draft": true,
+  "links": [
+    { "type": "phone", "value": "1133", "label": "Taksi chaqirish", "highlight": true },
+    { "type": "telegram", "value": "ilgor_taxi", "label": "Telegram orqali buyurtma" },
+    { "type": "instagram", "value": "ilgor_taxi" },
+    { "type": "link", "value": "https://t.me/ilgor_taxi_drivers", "label": "Haydovchi boʻlish" }
+  ],
+  "socials": [
+    { "type": "telegram", "value": "ilgor_taxi" },
+    { "type": "instagram", "value": "ilgor_taxi" }
+  ],
+  "contact": {
+    "name": "Ilgʻor Taxi",
+    "phones": ["1133"],
+    "note": "Taksi chaqirish"
+  }
+}
