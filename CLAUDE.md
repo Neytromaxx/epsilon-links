@@ -1,7 +1,7 @@
 # Epsilon Links — Claude Code guide
 
 A link-in-bio site like taplinks.cc: one page per project or person with all of its links, printed as a
-QR code. First page: Epsilon Taxi (sister repo `Neytromaxx/t51`). Repo: `Neytromaxx/epsilon-links`.
+QR code. First page: Ilgʻor Taxi, `/ilgor-taxi` (the taxi runs on sister repo `Neytromaxx/t51`). Repo: `Neytromaxx/epsilon-links`.
 
 **Read before any change:** `README.md`, `docs/DECISIONS.md` (L-xxx), `docs/BACKLOG.md`.
 
@@ -47,6 +47,9 @@ npm run build    # static dist/
 
 ## Current status
 
-- **MVP:** profile page, QR page with SVG/PNG, vCard, home list, 404; Epsilon Taxi page is a draft
-  until the owner sends the real links.
-- **Next:** real Epsilon Taxi links and logo, Vercel project, then the final QR files.
+- **Live:** https://epsilon-links.vercel.app (Vercel, `main`). Production address is fixed in
+  `src/lib/site.ts` (L-012).
+- **MVP:** profile page, QR page with SVG/PNG, vCard, home list, 404. `/ilgor-taxi` is a draft until the
+  owner sends the real links; its QR code is final.
+- **Next (owner's plan):** a backend and database so page owners edit their own pages (`apps/api`).
+  Printed QR addresses (`/<slug>`) must keep working after that.

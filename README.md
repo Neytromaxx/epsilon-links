@@ -1,6 +1,6 @@
 # Epsilon Links
 
-taplinks.cc ga oʻxshash sayt: har bir loyiha yoki inson uchun bitta sahifa, unda barcha tarmoqlardagi havolalar. Sahifa manzili QR kod qilib chop etiladi. Birinchi sahifa — Epsilon Taxi.
+taplinks.cc ga oʻxshash sayt: har bir loyiha yoki inson uchun bitta sahifa, unda barcha tarmoqlardagi havolalar. Sahifa manzili QR kod qilib chop etiladi. Birinchi sahifa — Ilgʻor Taxi: https://epsilon-links.vercel.app/ilgor-taxi
 
 MVP faqat frontend: sahifalar repodagi JSON fayllardan statik HTML boʻlib yigʻiladi va Vercel ga qoʻyiladi. Backend, roʻyxatdan oʻtish va tahrirlash paneli yoʻq ([docs/BACKLOG.md](docs/BACKLOG.md)).
 
@@ -20,16 +20,16 @@ Keyin kerak boʻlsa, shu yerga `apps/api` (statistika, tahrirlash paneli) qoʻsh
 | Manzil | Nima |
 |---|---|
 | `/` | Barcha sahifalar roʻyxati |
-| `/<sahifa>` | Havolalar sahifasi, masalan `/epsilon-taxi` |
+| `/<sahifa>` | Havolalar sahifasi, masalan `/ilgor-taxi` |
 | `/<sahifa>/qr` | QR kod: koʻrish, SVG va PNG yuklab olish, chop etish |
 | `/<sahifa>/qr.svg`, `/<sahifa>/qr.png` | QR fayllari (PNG 1024 × 1024) |
 | `/<sahifa>/contact.vcf` | Telefon kontaktlariga saqlash (agar `contact` berilgan boʻlsa) |
 
-QR kod build paytida saytning production manzilidan yasaladi. Vercel da bu loyiha domeni (`VERCEL_PROJECT_PRODUCTION_URL`), oʻz domeningiz boʻlsa — `PUBLIC_SITE_URL`. Preview deploy larda ham QR production manzilga olib boradi.
+QR kod build paytida saytning asosiy manzilidan yasaladi: `https://epsilon-links.vercel.app` (`apps/web/src/lib/site.ts` dagi `PRODUCTION_SITE`). Oʻz domeningiz boʻlsa — Vercel da `PUBLIC_SITE_URL`. Preview deploy larda ham QR asosiy manzilga olib boradi ([L-012](docs/DECISIONS.md)).
 
 ## Yangi sahifa qoʻshish yoki tahrirlash
 
-1. `apps/web/src/content/profiles/` ga `<manzil>.json` faylini qoʻshing. Fayl nomi — sahifa manzili: kichik lotin harflari, raqamlar va `-` (masalan `epsilon-taxi.json` → `/epsilon-taxi`).
+1. `apps/web/src/content/profiles/` ga `<manzil>.json` faylini qoʻshing. Fayl nomi — sahifa manzili: kichik lotin harflari, raqamlar va `-` (masalan `ilgor-taxi.json` → `/ilgor-taxi`).
 2. Avatar boʻlsa, kvadrat rasmni (kamida 256 × 256, PNG yoki JPEG) `apps/web/public/avatars/` ga qoʻying.
 3. `npm run check` va `npm run build` — xato boʻlsa, qaysi fayl va qaysi maydon notoʻgʻri ekanini aytadi.
 4. Commit → Vercel oʻzi yangilaydi.
@@ -38,9 +38,9 @@ Misol:
 
 ```json
 {
-  "name": "Epsilon Taxi",
+  "name": "Ilgʻor Taxi",
   "bio": "Oltiariq va Toshkent boʻylab taksi.",
-  "avatar": "/avatars/epsilon-taxi.png",
+  "avatar": "/avatars/ilgor-taxi.png",
   "links": [
     { "type": "phone", "value": "+998901234567", "label": "Taksi chaqirish", "highlight": true },
     { "type": "telegram", "value": "epsilon_taxi_bot", "label": "Telegram orqali buyurtma" },
@@ -48,7 +48,7 @@ Misol:
     { "type": "map", "value": "https://yandex.uz/maps/-/CDabc123", "label": "Ofis manzili" }
   ],
   "socials": [{ "type": "telegram", "value": "epsilon_taxi" }],
-  "contact": { "name": "Epsilon Taxi", "phones": ["+998901234567"] }
+  "contact": { "name": "Ilgʻor Taxi", "phones": ["+998901234567"] }
 }
 ```
 
@@ -87,7 +87,7 @@ Node.js 24 kerak (`apps/web/.nvmrc`).
 ```bash
 cd apps/web
 npm ci
-npm run dev        # http://localhost:4321/epsilon-taxi
+npm run dev        # http://localhost:4321/ilgor-taxi
 npm run check      # turlar (astro check) va testlar (vitest)
 npm run build      # dist/ — Vercel ham shuni qiladi
 ```
@@ -102,9 +102,9 @@ Vercel → **Add New → Project** → `Neytromaxx/epsilon-links` ni import qili
 | Framework Preset | Astro (`vercel.json` da ham yozilgan) |
 | Install / Build / Output | `npm ci` / `npm run build` / `dist` |
 | Node.js | 24.x (`package.json` → `engines`) |
-| Environment Variables | Oddiy holatda kerak emas. Oʻz domeningiz ulansa: `PUBLIC_SITE_URL=https://links.epsilon.uz` |
+| Environment Variables | Kerak emas. Oʻz domeningiz ulansa: `PUBLIC_SITE_URL=https://links.epsilon.uz` |
 
-Deploy tugagach, manzilni (masalan `https://epsilon-links.vercel.app/epsilon-taxi`) tekshiring. QR — `/epsilon-taxi/qr` sahifasida.
+Deploy tugagach, manzilni (masalan `https://epsilon-links.vercel.app/ilgor-taxi`) tekshiring. QR — `/ilgor-taxi/qr` sahifasida.
 
 > QR koddagi manzil keyin oʻzgarmasligi kerak: chop etilgan QR larni qaytarib boʻlmaydi. Oʻz domeningiz boʻlsa, uni ommaviy chop etishdan **oldin** ulang. `vercel.app` manzili ham loyiha oʻchirilmaguncha ishlaydi.
 
