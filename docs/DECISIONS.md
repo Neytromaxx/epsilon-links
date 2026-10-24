@@ -1,0 +1,17 @@
+# Qarorlar jurnali
+
+Har bir yozuvda: sana, qaror va sabab. ✅ — qabul qilingan, ❓ — buyurtmachi javobi kutilmoqda.
+
+| # | Sana | Qaror | Sabab |
+|---|---|---|---|
+| L-001 ✅ | 2026-10-24 | MVP faqat frontend: har bir sahifa repodagi JSON fayl, build paytida statik HTML. Backend, akkaunt va tahrirlash paneli yoʻq. | Buyurtmachi: “MVP uchun frontend yetarli”, ish shoshilinch. Sahifalarni hozircha men yoki dasturchi qoʻshadi. |
+| L-002 ✅ | 2026-10-24 | Monorepo: sayt `apps/web` da, oʻz `package.json` va `package-lock.json` bilan (npm workspaces yoʻq). Vercel da Root Directory `apps/web`. | Buyurtmachi monorepo soʻradi. Mustaqil paket Vercel da eng oddiy va ishonchli sozlama (t51 dagi `operator_panel` kabi). Keyin `apps/api` qoʻshish mumkin. |
+| L-003 ✅ | 2026-10-24 | **Astro 7.4.2** (MIT), `output: 'static'`, mijoz tomonida JavaScript yoʻq (faqat QR sahifasidagi “Chop etish”). Node 24 (Astro 7 ≥ 22.23.4 talab qiladi). | Har sahifa — tayyor HTML: sekin mobil internetda tez ochiladi, Telegram va WhatsApp havola koʻrinishi (`og:` teglar) toʻgʻri chiqadi. SPA da har sahifa uchun meta teglar boʻlmasdi. |
+| L-004 ✅ | 2026-10-24 | Sahifa maʼlumoti Astro content collection (`src/content.config.ts`) sxemasi bilan tekshiriladi: notoʻgʻri telefon, `http://` yoki begona domenli havola (masalan Instagram tugmasida boshqa sayt) build ni toʻxtatadi. | Notoʻgʻri havola chop etilgan QR orqali koʻp odamga yetib boradi. Xato build da koʻrinsin, saytda emas. |
+| L-005 ✅ | 2026-10-24 | QR kod build paytida `qrcode` 1.5.4 (MIT) bilan yasaladi: SVG (chop etish) va PNG 1024 px, xato tuzatish darajasi M, deyarli qora rang oq fonda, markazda logotip yoʻq. Manzil: `PUBLIC_SITE_URL`, boʻlmasa `VERCEL_PROJECT_PRODUCTION_URL` — preview deploy da ham production manzil. | Chop etilgan QR doim asosiy manzilga olib borishi kerak. Logotip va rangli QR baʼzi kameralarda yomon oʻqiladi. Tekshirildi: PNG `jsQR` bilan `https://epsilon-links.vercel.app/epsilon-taxi` deb oʻqildi. |
+| L-006 ✅ | 2026-10-24 | Ikonkalar: `simple-icons` 16.35.0 (CC0, brendlar) va `lucide-static` 1.61.0 (ISC, telefon, xarita va h.k.), faqat build da ishlatiladi — sahifaga inline SVG boʻlib tushadi. | Brend logotiplarini qoʻlda chizish xato. Ikkala paket ham bepul litsenziyali, sahifa hajmiga faqat kerakli ikonkalar qoʻshiladi. |
+| L-007 ✅ | 2026-10-24 | `draft: true` — namuna sahifa: havolalar bosilmaydi, ogohlantirish chiqadi, `noindex`. Epsilon Taxi sahifasi haqiqiy havolalar kelguncha namuna. | Namunadagi username yoki raqam begona odamga tegishli boʻlib chiqishi mumkin. Manzil (`/epsilon-taxi`) va QR shu bilan oldindan tayyor turadi. |
+| L-008 ✅ | 2026-10-24 | “Kontaktni saqlash” — `/<sahifa>/contact.vcf` (vCard 3.0). | Taksi uchun dispetcher raqami telefon kontaktlarida tursa, keyingi safar sahifani ochish shart emas. |
+| L-009 ✅ | 2026-10-24 | Statistika (bosishlar soni) va cookie lar yoʻq. | Backend yoʻq; Vercel Web Analytics ni keyin yoqish mumkin ([BACKLOG](BACKLOG.md)). Shaxsiy maʼlumot yigʻilmaydi. |
+| L-010 ✅ | 2026-10-24 | Tekshiruvlar: `npm run check` = `astro check` (TypeScript 5.9.3) + Vitest 5.0.5 (havola qoidalari, vCard, manzil). ESLint hozircha yoʻq. | Kichik kod bazasi; turlar va testlar asosiy xatolarni ushlaydi. TypeScript 7 ni `@astrojs/check` hali qoʻllamaydi. |
+| L-011 ❓ | 2026-10-24 | Manzil hozircha `epsilon-links.vercel.app/epsilon-taxi`. Oʻz domeni (masalan `links.epsilon.uz`) boʻlsa, ommaviy chop etishdan oldin ulanadi. | Chop etilgan QR dagi manzil oʻzgarmaydi. |

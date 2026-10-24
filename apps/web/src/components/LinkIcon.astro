@@ -1,0 +1,59 @@
+---
+import { Download, Globe, Link, Mail, MapPin, Phone } from 'lucide-static'
+import { siFacebook, siInstagram, siTelegram, siTiktok, siWhatsapp, siYoutube, type SimpleIcon } from 'simple-icons'
+
+import type { LinkType } from '../lib/links'
+
+interface Props {
+  type: LinkType
+}
+
+const brands: Partial<Record<LinkType, SimpleIcon>> = {
+  telegram: siTelegram,
+  instagram: siInstagram,
+  facebook: siFacebook,
+  youtube: siYoutube,
+  tiktok: siTiktok,
+  whatsapp: siWhatsapp,
+}
+const outlines: Partial<Record<LinkType, string>> = {
+  phone: Phone,
+  website: Globe,
+  map: MapPin,
+  email: Mail,
+  download: Download,
+  link: Link,
+}
+
+const { type } = Astro.props
+const brand = brands[type]
+// Black brand colours (TikTok) would vanish in the dark theme: those follow the text colour.
+const dark = brand ? parseInt(brand.hex, 16) < 0x202020 : false
+const style = brand && !dark ? `--brand: #${brand.hex}` : undefined
+---
+
+<span class="icon" aria-hidden="true" style={style}>
+  {
+    brand ? (
+      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d={brand.path} />
+      </svg>
+    ) : (
+      <Fragment set:html={outlines[type] ?? Link} />
+    )
+  }
+</span>
+
+<style>
+  .icon {
+    display: inline-flex;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    color: var(--brand, currentColor);
+  }
+  .icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro'
+import { allProfiles, type Profile } from '../../lib/profiles'
+import { qrSvg } from '../../lib/qr'
+import { profileUrl } from '../../lib/site'
+import { uz } from '../../texts/uz'
+
+export async function getStaticPaths() {
+  return (await allProfiles()).map((profile) => ({ params: { slug: profile.id }, props: { profile } }))
+}
+
+interface Props {
+  profile: Profile
+}
+
+const { profile } = Astro.props
+const slug = profile.id
+const url = profileUrl(Astro.site ?? '', slug)
+const svg = await qrSvg(url)
+---
+
+<Base title={uz.qrTitle(profile.data.name)} noindex>
+  <main class="page qr-page">
+    <h1>{profile.data.name}</h1>
+    <figure>
+      <div class="qr" role="img" aria-label={url} set:html={svg} />
+      <figcaption>
+        <strong>{url.replace(/^https?:\/\//, '')}</strong>
+        <span>{uz.qrHint}</span>
+      </figcaption>
+    </figure>
+    <nav class="actions">
+      <a href={`/${slug}/qr.svg`} download={`${slug}-qr.svg`}>{uz.downloadSvg}</a>
+      <a href={`/${slug}/qr.png`} download={`${slug}-qr.png`}>{uz.downloadPng}</a>
+      <button type="button" onclick="window.print()">{uz.print}</button>
+      <a href={`/${slug}`}>{uz.backToProfile}</a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  .qr-page {
+    text-align: center;
+  }
+  h1 {
+    margin: 0 0 16px;
+    font-size: 24px;
+  }
+  figure {
+    margin: 0;
+  }
+  .qr {
+    width: min(100%, 360px);
+    margin: 0 auto;
+    padding: 8px;
+    border-radius: var(--radius);
+    background: #ffffff;
+  }
+  .qr :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 12px;
+  }
+  figcaption strong {
+    font-size: 18px;
+    overflow-wrap: anywhere;
+  }
+  figcaption span {
+    color: var(--muted);
+  }
+  .actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .actions a,
+  .actions button {
+    display: block;
+    min-height: 48px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  @media print {
+    .actions {
+      display: none;
+    }
+    .qr {
+      width: 12cm;
+    }
+  }
+</style>

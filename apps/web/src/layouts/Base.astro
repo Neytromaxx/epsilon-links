@@ -1,0 +1,41 @@
+---
+import '../styles/global.css'
+
+import { uz } from '../texts/uz'
+
+interface Props {
+  title: string
+  description?: string | undefined
+  /** Absolute URL of a PNG or JPEG for link previews (Telegram, WhatsApp). */
+  image?: string | undefined
+  noindex?: boolean
+}
+
+const { title, description = uz.siteDescription, image, noindex = false } = Astro.props
+const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site).href
+---
+
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0A3D62" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#071C2C" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={uz.siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content="summary" />
+    {noindex && <meta name="robots" content="noindex" />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
