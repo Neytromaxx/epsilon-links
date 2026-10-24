@@ -1,0 +1,187 @@
+---
+import LinkButton from '../../components/LinkButton.astro'
+import LinkIcon from '../../components/LinkIcon.astro'
+import Base from '../../layouts/Base.astro'
+import { linkHref } from '../../lib/links'
+import { allProfiles, initials, type Profile } from '../../lib/profiles'
+import { uz } from '../../texts/uz'
+
+export async function getStaticPaths() {
+  return (await allProfiles()).map((profile) => ({ params: { slug: profile.id }, props: { profile } }))
+}
+
+interface Props {
+  profile: Profile
+}
+
+const { profile } = Astro.props
+const { name, bio, avatar, links, socials, contact, draft } = profile.data
+const slug = profile.id
+// Link previews need a raster image; an SVG avatar is shown on the page only.
+const previewImage = avatar && !avatar.endsWith('.svg') ? new URL(avatar, Astro.site).href : undefined
+---
+
+<Base title={name} description={bio} image={previewImage} noindex={draft}>
+  <main class="page">
+    {draft && <p class="notice">{uz.draftNotice}</p>}
+
+    <header class="profile">
+      {
+        avatar ? (
+          <img class="avatar" src={avatar} alt="" width="104" height="104" />
+        ) : (
+          <div class="avatar avatar--initials" aria-hidden="true">
+            {initials(name)}
+          </div>
+        )
+      }
+      <h1>{name}</h1>
+      {bio && <p class="bio">{bio}</p>}
+    </header>
+
+    <ul class="links">
+      {
+        links.map((link) => (
+          <li>
+            <LinkButton {...link} disabled={draft} />
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      contact && (
+        <p class="contact">
+          {draft ? (
+            <span class="secondary" aria-disabled="true">
+              <LinkIcon type="phone" />
+              {uz.saveContact}
+            </span>
+          ) : (
+            <a class="secondary" href={`/${slug}/contact.vcf`} download={`${slug}.vcf`}>
+              <LinkIcon type="phone" />
+              {uz.saveContact}
+            </a>
+          )}
+        </p>
+      )
+    }
+
+    {
+      socials.length > 0 && (
+        <ul class="socials">
+          {socials.map((social) => (
+            <li>
+              {draft ? (
+                <span class="social" aria-disabled="true" title={uz.linkLabels[social.type]}>
+                  <LinkIcon type={social.type} />
+                </span>
+              ) : (
+                <a class="social" href={linkHref(social.type, social.value)} rel="noopener">
+                  <LinkIcon type={social.type} />
+                  <span class="visually-hidden">{social.label ?? uz.linkLabels[social.type]}</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <footer>
+      <a href={`/${slug}/qr`}>{uz.showQr}</a>
+      <span aria-hidden="true">·</span>
+      <a href="/">{uz.siteName}</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .avatar {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--surface-strong);
+  }
+  .avatar--initials {
+    display: grid;
+    place-items: center;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  h1 {
+    margin: 16px 0 4px;
+    font-size: 26px;
+    line-height: 1.2;
+  }
+  .bio {
+    margin: 0;
+    max-width: 36ch;
+    color: var(--muted);
+  }
+  .links {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contact {
+    margin: 16px 0 0;
+    text-align: center;
+  }
+  .secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .socials {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .social {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+  }
+  [aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  footer {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 36px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer a {
+    color: var(--muted);
+  }
+</style>

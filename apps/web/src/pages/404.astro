@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro'
+import { uz } from '../texts/uz'
+---
+
+<Base title={uz.notFoundTitle} noindex>
+  <main class="page">
+    <h1>{uz.notFoundTitle}</h1>
+    <p>{uz.notFoundText}</p>
+    <p><a href="/">{uz.toHome}</a></p>
+  </main>
+</Base>

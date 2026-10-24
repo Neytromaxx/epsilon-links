@@ -1,0 +1,93 @@
+---
+import { linkDetail, linkHref, type LinkType } from '../lib/links'
+import { uz } from '../texts/uz'
+import LinkIcon from './LinkIcon.astro'
+
+interface Props {
+  type: LinkType
+  value: string
+  label?: string | undefined
+  highlight?: boolean
+  /** Sample data: rendered, but not clickable. */
+  disabled?: boolean
+}
+
+const { type, value, label, highlight = false, disabled = false } = Astro.props
+const text = label ?? uz.linkLabels[type]
+const detail = linkDetail(type, value)
+const className = ['button', highlight && 'button--highlight'].filter(Boolean).join(' ')
+---
+
+{
+  disabled ? (
+    <span class={className} aria-disabled="true">
+      <LinkIcon type={type} />
+      <span class="text">
+        <span class="label">{text}</span>
+        {detail && <span class="detail">{detail}</span>}
+      </span>
+    </span>
+  ) : (
+    <a class={className} href={linkHref(type, value)} rel="noopener">
+      <LinkIcon type={type} />
+      <span class="text">
+        <span class="label">{text}</span>
+        {detail && <span class="detail">{detail}</span>}
+      </span>
+    </a>
+  )
+}
+
+<style>
+  .button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 60px;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      transform 0.08s ease,
+      background-color 0.15s ease;
+  }
+  a.button:hover {
+    background: var(--surface-strong);
+  }
+  a.button:active {
+    transform: scale(0.98);
+  }
+  .button--highlight {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  a.button--highlight:hover {
+    background: var(--primary);
+    filter: brightness(1.1);
+  }
+  .button--highlight :global(.icon) {
+    color: currentColor;
+  }
+  span[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .label {
+    font-weight: 600;
+    font-size: 17px;
+  }
+  .detail {
+    font-size: 14px;
+    opacity: 0.8;
+    overflow-wrap: anywhere;
+  }
+</style>
